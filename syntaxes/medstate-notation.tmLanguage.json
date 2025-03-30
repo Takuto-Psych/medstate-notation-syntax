@@ -1,0 +1,97 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "MedState Notation",
+	"patterns": [
+		{
+			"include": "#function"
+		},
+		{
+			"include": "#otherfunction"
+		},
+		{
+			"include": "#statement"
+		},
+		{
+			"include": "#time"
+		},
+		{
+			"include": "#comment"
+		}
+		,{
+			"include": "#number"
+		},
+		{
+			"include": "#at"
+		},
+		{
+			"include": "#inoutput"
+		},
+		{
+			"include": "#arrow"
+		}
+		
+		
+	],
+	"repository": {
+		"function": {
+			"patterns": [{
+				"name": "support.function.git-rebase",
+				"match": "(?i)\\b(ADD|ALERTOFF|ALERTON|ARITHMETICMEAN|BIN|BKGRND|BOX|BOX_PRINTER_NAME|BOX_PRINTER_SETTINGS|BTIME|CLEAR|COMMENT|Constants|COPYARRAY|CURRENTDATE|CURRENTHOURS|CURRENTMINUTES|CURRENTMONTH|CURRENTSECONDS|CURRENTYEAR|DATE|DATETODAY|DEFAULT_PRINTER_NAME|DEFAULT_PRINTER_SETTINGS|DELAY|DIM|DISKCOLUMNS|DISKFORMAT|DISKOPTIONS|DISKVARS|ENDDATE|ENDHOURS|ENDMINUTES|ENDMONTH|ENDSECONDS|ENDYEAR|EXIT_WHEN_DONE|EXPNUMBER|FILENAME|FLUSH|GEOMETRICMEAN|GETVAL|GROUPNUMBER|HARMONICMEAN|IF|INITCONSTPROBARR|INPUTBOX|K-pulse|LIMIT|LIST|LOAD|LOCKOFF|LOCKON|LOG_OPTIONS|MAXARRAY|MAXARRAYINDEX|MINARRAY|MINARRAYINDEX|MODIFY_IDENTIFIERS|NUMERICINPUNTBOX|OFF|ON|PLAYMACRO|POPULATIONVARIANCE|PRINT|PRINTCOLUMNS|PRINTFORMAT|PRINTOPTIONS|PRINTORIENTATION|PRINTPOINTS|PRINTVARS|RANDD|RANDI|RESET_ERRORS|Responses|SAMPLEVARIANCE|SAVE_FLUSH|SAVE_MANUAL|SECSTODAY|SET|SHOW|SHOWMESSAGE|START BOXES|STARTDATE|STARTHOURS|STARTMINUTES|STARTMONTH|STARTSECONDS|STARTYEAR|STOPABORT|STOPABORTFLUSH|STOPKILL|SUB|SUBJECTNUMBER|SUMARRAY|SUMSQUAREARRAY|TEXTINPUTBOX|TIME|TIMED_OUTPUT|VAR_ALIAS|WITHPI|Y2KCOMPLIANT|ZEROARRAY|Z-pulses)\\b"
+			}]
+		},
+		"otherfunction": {
+			"patterns": [{
+				"name": "string",
+				"match": "#(?i)\\b(K|R|START|T|Z|)\\b"
+			}]
+		},
+		"number": {
+			"name": "numeric.quoted.double.medstatenotation",
+			"patterns": [
+				{
+					"name": "constant.numeric.medstate-notation",
+					"match": "[\\d]*[\\.]*[\\d]+"
+				}
+			]
+		},
+		
+		"statement": {
+			"patterns": [{
+				"name": "string",
+				"match": "\\b([S\\.]+[\\d]+|S[\\d]+)\\b"
+			}]
+		}
+		,"time":{
+			"patterns": [{
+				"name": "constant.numeric",
+				"match": "\\'|\\\""
+			}]
+		},
+		"comment":{
+			"patterns": [{
+				"name": "comment.control.medstate-notation",
+				"match": "\\\\[^\\n]*"
+			}]
+		},
+		"at":{
+			"patterns": [{
+				"name": "string",
+				"match": "@[\\w]+"
+			}]
+		},
+		"inoutput":{
+			"patterns": [{
+				"name": "entity.name.type",
+				"match": "\\^[\\w]+"
+			}]
+		},
+		"arrow":{
+			"patterns": [{
+				"name": "markup.bold",
+				"match": "--->"
+			}]
+		}
+		
+	},
+	"scopeName": "medstate-notation"
+}

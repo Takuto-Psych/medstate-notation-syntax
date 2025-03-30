@@ -1,0 +1,25 @@
+{
+  "name": "medstate-notation",
+  "displayName": "medstate-notation",
+  "description": "medstate-notation",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "medstate-notation",
+      "aliases": ["MedState Notation", "medstate-notation"],
+      "extensions": [".mpc"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "medstate-notation",
+      "scopeName": "medstate-notation",
+      "path": "./syntaxes/medstate-notation.tmLanguage.json"
+    }]
+  }
+}
