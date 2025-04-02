@@ -1,0 +1,41 @@
+\ This is an FR-5 File
+
+
+\\This section is for Inputs
+^LeftLever = 1
+
+
+\\This section is fot Outputs
+^HouseLight = 1
+^FoodDipper = 3 \\Pellet dipper
+
+
+S.S.1, \\\Main control logic for FR
+    S1,
+        #START : ON^HouseLight ---> S2
+    
+    S2,
+        5#R^LeftLever: ON^FoodDipper; Z1 ---> SX
+
+S.S.2,  \\This is the state set that contains the response
+        \\Count and display
+    S1,
+        #START : SHOW 1, Responses, A ---> S2
+    
+    S2,
+        #R ^LeftLever : ADD A; SHOW 1, Responses, A ---> SX
+
+S.S.3, \\Reward timer, count, and display
+    S1,
+        #Z1 : ADD B; SHOW 2, Rewards, B ---> S2
+    
+    S2, 
+        0.05" : OFF^FoodDipper ---> S1
+
+S.S.4, \\Session Timer
+    S1,
+        #START: ---> S2
+
+    S2,
+        1': ---> STOPABORT
+    

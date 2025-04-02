@@ -1,0 +1,23 @@
+\ This is a sample program
+
+\\\ Here Input
+
+^LeftLever = 1 \\ the setting in my lab is 7 as House Light
+
+\\\ Here Output
+^HouseLight = 7 \\ the setting in my lab is 7 as House Light
+
+\\\ Statement
+
+S.S.1,
+
+S1,
+    0.01": ON ^HouseLight ---> S2
+
+\\\ When the left lever was input, then ADD 1? to C, and the number of C is shown in screen 1,
+\\\ And the next statement (SX) is coming.
+S2,
+    #R^LeftLever: ADD C; SHOW 1, Count, C ---> SX
+
+
+

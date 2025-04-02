@@ -1,0 +1,17 @@
+\ This is a sample program
+
+\\\ Here Output
+
+^HouseLight = 7 \\ the setting in my lab is 7 as House Light
+
+\\\ Statement
+
+S.S.1,
+
+S1,
+    1": ON ^HouseLight ---> S2
+
+S2,
+    5": OFF ^HouseLight ---> S1
+
+\\\So, Looping Light on off.
