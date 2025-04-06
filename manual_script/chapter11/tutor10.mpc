@@ -1,0 +1,104 @@
+\ This is an VR-10 File
+
+
+\\This section is for Inputs
+^LeftLever = 1
+
+
+\\This section is fot Outputs
+^HouseLight = 1
+^FoodDipper = 3 \\Pellet dipper
+
+
+\\\ Defined Variables
+\   A = Number of response
+\   B = Numebre of rewrds
+\   C = IRT data array
+\   D = Variable ratio array
+\   M = Max time in minutes
+\   N = Session timer
+\   Q = Max Rewards
+
+
+\\\This VAR_ARIAS sentences is for MedPC interface, right?
+
+VAR_ARIAS Session Time              = M \ Default = 1 minute
+VAR_ARIAS Maximum Number of Rewards = Q \ Default = 10
+
+DIM C = 999
+
+LIST D = 1, 5, 10, 15, 19
+
+
+PRINTORIENTATION = LANDSCAPE
+PRINTCOLUMNS = 4
+PRINTOPTIONS = FULLEHEADERS, FORMFEEDS
+PRINTVARS = A, B, C
+
+S.S.1, \\\Main control logic for VR
+    S1,
+        0.001": SET Q = 10, M = 1 ---> S2
+        
+    S2,
+        #START : ON^HouseLight ---> S3
+
+    S3,
+        \\\ It is "---> S3" in the manual, maybe, however, this is a miswriting.
+        1": RANDD X = D; SHOW 2, VR =, X ---> S4 
+        
+        
+    S4,
+        X#R^LeftLever: ON^FoodDipper; Z1 ---> S3 \\\ Here too.
+        
+        #Z2: ---> S1
+
+S.S.2,  \\This is the state set that contains the response
+        \\Count and display
+    S1,
+        #START : SHOW 3, Responses, A ---> S2
+    
+    S2,
+        #R^LeftLever : ADD A; SHOW 3, Responses, A ---> SX
+        #Z2: ---> S1
+
+S.S.3, \\Reward timer, count, and display
+    S1,
+        #Z1 : ADD B; SHOW 4, Rewards, B ---> S2
+    
+    S2, 
+        0.05" : OFF^FoodDipper ---> S1
+
+S.S.4, \\Time increment in 0.1 second intervals
+    S1,
+        #START: ---> S2
+
+    S2,
+        0.1": SET T = T + 0.1 ---> SX
+
+S.S.5,   \Recording IRT's
+    S1,
+        #START ---> S2
+
+    S2,
+        #R^LeftLever: SET C(I) = T, T = 0; ADD I;
+                      SET C(I) = -987.987 ---> SX
+        #Z2: ---> S1
+
+
+S.S.6, \\Session Timer
+    S1,
+        #START: SHOW 1, Session, N/60 ---> S2
+
+    S2,
+        1": ADD N, SHOW 1, Session N/60;
+            IF N/60 < M [@True, @False]
+                @True: IF Q <= B [@MaxRewards, @Continue]
+                    @MaxRewards: Z2 ---> S3
+                    @Continue: ---> SX
+                
+                @False: Z2 ---> S3
+
+    S3,
+        5": PRINT ---> STOPABORTFLUSH
+
+    
