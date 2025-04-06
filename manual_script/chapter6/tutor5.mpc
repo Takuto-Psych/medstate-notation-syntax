@@ -1,0 +1,48 @@
+\ This is an FI File
+
+
+\\This section is for Inputs
+^LeftLever = 1
+
+
+\\This section is fot Outputs
+^HouseLight = 1
+^FoodDipper = 3 \\Pellet dipper
+
+
+S.S.1, \\\Main control logic for FI
+    S1,
+        0.01": SET X = 10 ---> S2
+
+    S2,  \changed S1 to S2
+        #START : ON^HouseLight; SET X = X * 1" ---> S3
+        1": SHOW 1, FI =, X ---> SX
+
+    S3,
+        X#T: ---> S4
+    
+    S4, \changedee S3 to S4
+        #R^LeftLever: ON^FoodDipper; Z1 ---> S3 \delete 5 before #R and \change SX to S3, by this the state loop to 10 sec
+
+S.S.2,  \\This is the state set that contains the response
+        \\Count and display
+    S1,
+        #START : SHOW 2, Responses, A ---> S2 \was show 1
+    
+    S2,
+        #R ^LeftLever : ADD A; SHOW 1, Responses, A ---> SX
+
+S.S.3, \\Reward timer, count, and display
+    S1,
+        #Z1 : ADD B; SHOW 3, Rewards, B ---> S2 \was show 2
+    
+    S2, 
+        0.05" : OFF^FoodDipper ---> S1
+
+S.S.4, \\Session Timer
+    S1,
+        #START: ---> S2
+
+    S2,
+        1': ---> STOPABORT
+    

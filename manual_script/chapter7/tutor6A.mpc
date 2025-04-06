@@ -1,0 +1,57 @@
+\ This is an FR schedule
+
+
+\\This section is for Inputs
+^LeftLever = 1
+
+
+\\This section is fot Outputs
+^HouseLight = 1
+^FoodDipper = 3 \\Pellet dipper
+
+\ Defined Variables
+\   A = Number of Responses
+\   B = Number of Rewards
+\   M = Minutes
+\   X = Fixed Ratio
+\   N = Session Timer
+
+
+S.S.1, \\\Main control logic for FR
+    S1,
+        1": SET M = 1, X = 5 ---> S2
+    
+    S2,
+        #START: ON^HouseLight ---> S3
+
+    S3,
+        X#R^LeftLever: ON^FoodDipper; Z1 ---> SX
+
+S.S.2,  \\This is the state set that contains the response
+        \\Count and display
+    S1,
+        #START: SHOW 2, Responses, A ---> S2
+    
+    S2,
+        #R ^LeftLever: ADD A; SHOW 2, Responses, A ---> SX
+
+S.S.3, \\Reward timer, count, and display
+    S1,
+        #Z1: ADD B; SHOW 3, Rewards, B ---> S2
+    
+    S2,
+        0.05": OFF^FoodDipper ---> S1
+
+S.S.4, \\Session Timer
+    S1,
+        #START: SHOW 1, Session, N ---> S2
+
+    S2,
+        1": ADD N; SHOW 1, Session, N/60;
+            IF N/60 >= M [@True, @False]
+                @True: ---> S3 \\ Therefore, when thesessiontimer >= M, time to stop
+                @False: ---> SX \\ But if session timer < M, go no where
+
+    S3,
+        3": --->STOPABORT
+    

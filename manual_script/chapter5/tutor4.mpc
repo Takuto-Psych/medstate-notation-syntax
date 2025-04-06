@@ -23,11 +23,11 @@ S.S.2,  \\This is the state set that contains the response
         #START : SHOW 1, Responses, A ---> S2
     
     S2,
-        #R ^LeftLever : ADD A; SHOW 1, Responses, A ---> SX
+        #R^LeftLever : ADD A; SHOW 1, Responses, A ---> SX
 
 S.S.3, \\Reward timer, count, and display
     S1,
-        #Z1 : ADD B; SHOW 2, Rewards, B ---> S2
+        #Z1: ADD B; SHOW 2, Rewards, B ---> S2
     
     S2, 
         0.05" : OFF^FoodDipper ---> S1

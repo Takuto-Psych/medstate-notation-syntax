@@ -1,0 +1,63 @@
+\ This is an FR-5
+
+
+\\This section is for Inputs
+^LeftLever = 1
+
+
+\\This section is fot Outputs
+^HouseLight = 1
+^FoodDipper = 3 \\Pellet dipper
+
+\ Defined Variables
+\   A = Number of Responses
+\   B = Number of Rewards
+\   M = Minutes
+\   X = Fixed Ratio
+\   N = Session Timer
+\   Q = Maximum Rewards
+
+S.S.1, \\\Main control logic for FR
+    S1,
+        1": SET M = 1, X = 5, Q = 5---> S2
+    
+    S2,
+        #START: ON^HouseLight ---> S3
+
+    S3,
+        X#R^LeftLever: ON^FoodDipper; Z1 ---> SX
+        #Z2: ---> S1
+
+S.S.2,  \\This is the state set that contains the response
+        \\Count and display
+    S1,
+        #START: SHOW 2, Responses, A ---> S2
+    
+    S2,
+        #R ^LeftLever: ADD A; SHOW 2, Responses, A ---> SX
+        #Z2: ---> S1
+
+S.S.3, \\Reward timer, count, and display
+    S1,
+        #Z1: ADD B; SHOW 3, Rewards, B ---> S2
+    
+    S2,
+        0.05": OFF^FoodDipper ---> S1
+
+S.S.4, \\Session Timer
+    S1,
+        #START: SHOW 1, Session, N ---> S2
+
+    S2,
+        1": ADD N; SHOW 1, Session, N/60;
+            IF N/60 < M [@True, @False] \ As long as session time < M we will continue
+                @True: IF B >= Q [@2True, @2False] \ If animal has enough rewards, we will stop
+                    @2True: Z2 ---> S3
+                    @2False: ---> SX
+                    \Z-pulse added for when elapsed time = M. 
+                    \It will send both S.S.1, S3, and S.S.2, S2 back to S1
+                @False: Z2 ---> S3 \\ But if session timer < M, go no where
+    S3,
+        3": ---> STOPABORT
+        
+    
